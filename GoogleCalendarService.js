@@ -1,22 +1,13 @@
-import { google, calendar_v3 } from 'googleapis';
-import { JWT } from 'google-auth-library';
-import { readFileSync, existsSync } from 'fs';
-import { resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
+const { google } = require('googleapis');
+const { JWT } = require('google-auth-library');
+const { readFileSync, existsSync } = require('fs');
+const { resolve } = require('path');
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-export interface CalendarEvent {
-  summary: string;
-  location: string;
-  description: string;
-  startDateTime: Date;
-  endDateTime: Date;
-}
-
-export class GoogleCalendarService {
-  private calendar: calendar_v3.Calendar | null = null;
-  private initialized = false;
+class GoogleCalendarService {
+  constructor() {
+    this.calendar = null;
+    this.initialized = false;
+  }
 
   /**
    * Initialize Google Calendar API service
@@ -25,11 +16,11 @@ export class GoogleCalendarService {
     try {
       // Check for credentials file or environment variable
       const credentialsPath = process.env.GOOGLE_CALENDAR_CREDENTIALS_PATH 
-        || resolve(__dirname, '../../google-calendar-credentials.json');
+        || resolve(__dirname, 'google-calendar-credentials.json');
       
       const credentialsJson = process.env.GOOGLE_CALENDAR_CREDENTIALS;
 
-      let credentials: any;
+      let credentials;
 
       if (credentialsJson) {
         // Use credentials from environment variable (for production)
@@ -61,14 +52,14 @@ export class GoogleCalendarService {
   /**
    * Check if calendar service is available
    */
-  isAvailable(): boolean {
+  isAvailable() {
     return this.initialized && this.calendar !== null;
   }
 
   /**
    * Add an event to Google Calendar
    */
-  async addEvent(event: CalendarEvent): Promise<boolean> {
+  async addEvent(event) {
     if (!this.calendar) {
       console.warn('[Calendar] Service not available, skipping event creation');
       return false;
@@ -83,7 +74,7 @@ export class GoogleCalendarService {
 
       // Format datetime as local time string without timezone (YYYY-MM-DDTHH:MM:SS)
       // Google will interpret this in the specified timeZone
-      const formatLocalDateTime = (date: Date, hours: number, minutes: number): string => {
+      const formatLocalDateTime = (date, hours, minutes) => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
@@ -108,7 +99,7 @@ export class GoogleCalendarService {
       console.log('[Calendar] Local start:', startLocal);
       console.log('[Calendar] Local end:', endLocal);
 
-      const calendarEvent: calendar_v3.Schema$Event = {
+      const calendarEvent = {
         summary: event.summary,
         location: event.location,
         description: event.description,
@@ -148,12 +139,7 @@ export class GoogleCalendarService {
   /**
    * Create a court booking event
    */
-  async addCourtBooking(
-    sport: 'tennis' | 'pickleball',
-    date: Date,
-    time: string,
-    buddy: string = 'Samuel Wang'
-  ): Promise<boolean> {
+  async addCourtBooking(sport, date, time, buddy = 'Samuel Wang') {
     // Parse the time string (e.g., "2:00 PM" or "14:00")
     const startDateTime = this.parseTimeToDate(date, time);
     if (!startDateTime) {
@@ -185,13 +171,17 @@ Booked via OpenClaw Bay Club Bot`,
   /**
    * Parse a time string and combine with a date
    */
-  private parseTimeToDate(date: Date, timeStr: string): Date | null {
+  parseTimeToDate(date, timeStr) {
     try {
-      // Handle formats like "2:00 PM", "2:00PM", "14:00", "2pm"
-      const normalizedTime = timeStr.trim().toUpperCase();
+      // Handle time ranges like "7:00 AM - 8:30 AM" by extracting just the start time
+      const timeRangeMatch = timeStr.match(/^(.+?)\s*-\s*.+$/);
+      const timeToUse = timeRangeMatch ? timeRangeMatch[1].trim() : timeStr;
       
-      let hours: number;
-      let minutes: number = 0;
+      // Handle formats like "2:00 PM", "2:00PM", "14:00", "2pm"
+      const normalizedTime = timeToUse.trim().toUpperCase();
+      
+      let hours;
+      let minutes = 0;
 
       // Match patterns like "2:00 PM", "2:30PM", "2 PM", "2PM"
       const match12Hour = normalizedTime.match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)$/);
@@ -225,4 +215,6 @@ Booked via OpenClaw Bay Club Bot`,
 }
 
 // Singleton instance
-export const calendarService = new GoogleCalendarService();
+const calendarService = new GoogleCalendarService();
+
+module.exports = { GoogleCalendarService, calendarService };

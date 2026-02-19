@@ -1,5 +1,5 @@
 import { BayClubBot, Sport } from './BayClubBot';
-import { calendarService } from './GoogleCalendarService';
+const { calendarService } = require('./GoogleCalendarService.js');
 
 /**
  * Helper function to instantiate and log in the bot.
