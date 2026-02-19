@@ -9,6 +9,7 @@ Automated tennis and pickleball court booking for Bay Club Connect using Stageha
 - 🤖 Automated browser control via Stagehand
 - 📅 Supports booking for today, tomorrow, or specific days of the week
 - 💬 WhatsApp integration via OpenClaw - check and book courts from your phone!
+- 📆 **Google Calendar integration** - bookings automatically added to your calendar
 
 ## How I Built This
 
@@ -119,17 +120,81 @@ export BAYCLUB_USERNAME="your-username"
 export BAYCLUB_PASSWORD="your-password"
 ```
 
-### 5. Test the Bot
+### 5. (Optional) Set Up Google Calendar Integration
+
+To automatically add bookings to your Google Calendar:
+
+#### Step 1: Create a Service Account
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project (or select existing)
+3. Enable the **Google Calendar API**
+4. Go to **APIs & Services → Credentials**
+5. Click **Create Credentials → Service Account**
+6. Give it a name (e.g., "Bay Club Bot")
+7. Click **Done**
+
+#### Step 2: Generate Key
+
+1. Click on your new service account
+2. Go to **Keys** tab
+3. Click **Add Key → Create New Key**
+4. Choose **JSON** format
+5. Download the JSON file
+
+#### Step 3: Share Your Calendar
+
+1. Open [Google Calendar](https://calendar.google.com)
+2. Find the calendar you want to use (or create a new one like "Court Bookings")
+3. Click the three dots → **Settings and sharing**
+4. Scroll to **Share with specific people**
+5. Add the service account email (from the JSON file: `client_email`)
+6. Give it **Make changes to events** permission
+
+#### Step 4: Configure OpenClaw
+
+Save the credentials JSON file to your droplet or add as environment variable:
+
+**Option A: File (local development)**
+```bash
+# Copy the JSON file to the skill directory
+cp ~/Downloads/your-service-account-key.json ~/.openclaw/workspace/skills/bayclub_manager/google-calendar-credentials.json
+```
+
+**Option B: Environment Variable (production)**
+```bash
+openclaw gateway config.patch
+```
+
+Add to the `env` section:
+```json
+{
+  "env": {
+    "GOOGLE_CALENDAR_CREDENTIALS": "{\"type\":\"service_account\",...}",
+    "GOOGLE_CALENDAR_ID": "your-calendar-id@group.calendar.google.com"
+  }
+}
+```
+
+**Get your Calendar ID:**
+1. Go to [Google Calendar](https://calendar.google.com)
+2. Click the three dots on your calendar → **Settings and sharing**
+3. Scroll down to **Integrate calendar**
+4. Copy the **Calendar ID** (looks like `abc123@group.calendar.google.com` or use `primary` for your main calendar)
+
+Now bookings will automatically appear in your calendar! 📅
+
+### 6. Test the Bot
 
 ```bash
 # Check tennis availability
 NODE_ENV=development STAGEHAND_ENV=LOCAL HEADLESS=true npx ts-node cli.ts check tennis today
 
-# Book a court
+# Book a court (will also add to calendar if configured)
 NODE_ENV=development STAGEHAND_ENV=LOCAL HEADLESS=true npx ts-node cli.ts book tennis sunday "5:00 PM - 6:30 PM"
 ```
 
-### 6. Use via OpenClaw Agent
+### 7. Use via OpenClaw Agent
 
 Once set up as a skill, you can use natural language with your OpenClaw agent:
 
@@ -180,20 +245,23 @@ See `SKILL.md` for the skill definition.
 3. **Sport Selection**: Clicks the appropriate sport (tennis/pickleball) and duration
 4. **Time Slot Discovery**: Parses the calendar view to find available slots
 5. **Booking Flow**: Automates the multi-step booking confirmation process
+6. **Calendar Sync**: Automatically adds confirmed bookings to Google Calendar (if configured)
 
 ### Files
 
 - `cli.ts` - Command-line interface for direct usage
 - `bayclub_skills.ts` - OpenClaw skill exports for agent integration
 - `BayClubBot.ts` - Main browser automation logic using Stagehand and Browserbase
+- `GoogleCalendarService.ts` - Google Calendar API integration
 - `SKILL.md` - OpenClaw skill definition
-- `package.json` - Dependencies (Stagehand, TypeScript)
+- `package.json` - Dependencies (Stagehand, googleapis, TypeScript)
 
 ### Technologies Used
 
 - **[Stagehand](https://github.com/browserbase/stagehand)** - AI-powered browser automation framework
 - **[Browserbase](https://browserbase.com)** - Serverless browser infrastructure for reliable automation
 - **[OpenClaw](https://openclaw.ai)** - AI agent framework & orchestration ([Docs](https://docs.openclaw.ai) | [GitHub](https://github.com/openclaw/openclaw))
+- **[Google Calendar API](https://developers.google.com/calendar)** - Automatic calendar event creation
 - **[TypeScript](https://www.typescriptlang.org/)** - Type-safe development
 - **[DigitalOcean](https://www.digitalocean.com)** - Cloud hosting ([Marketplace App](https://marketplace.digitalocean.com/apps/openclaw))
 - **[WhatsApp](https://www.whatsapp.com)** - Messaging interface via OpenClaw integration
