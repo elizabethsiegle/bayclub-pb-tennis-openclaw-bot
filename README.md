@@ -1,108 +1,83 @@
 # Bay Club Court Booking Bot
 
-Automated tennis and pickleball court booking for Bay Club Connect using Stagehand and OpenClaw.
+Never miss a court slot again. This bot handles tennis and pickleball bookings at Bay Club Connect automatically - you can even text it from WhatsApp.
 
-## Features
+## What It Does
 
-- 🎾 Tennis court availability checking and booking
-- 🏓 Pickleball court availability checking and booking
-- 🤖 Automated browser control via Stagehand
-- 📅 Supports booking for today, tomorrow, or specific days of the week
-- 💬 WhatsApp integration via OpenClaw - check and book courts from your phone!
-- 📆 **Google Calendar integration** - bookings automatically added to your calendar
+- 🎾 Checks tennis court availability
+- 🏓 Books pickleball courts
+- 🤖 Runs browser automation via Stagehand
+- 📅 Works with "today", "tomorrow", or specific weekdays
+- 💬 WhatsApp interface - just text to book
+- 📆 Auto-adds bookings to Google Calendar
 
-## How I Built This
+## The Story
 
-**This entire bot was built and edited via WhatsApp!** 🤯
+I built this entire thing through WhatsApp messages. No SSH, no VS Code - just chatting with my OpenClaw agent.
 
-I chatted with my OpenClaw agent through WhatsApp to write all the code, debug the automation, clean up files, create this README, and push everything to GitHub - all without touching a traditional code editor.
+Seriously. I'd text things like "the pickleball selector is broken, can you fix the XPath?" and it would debug, fix the code, test it, and push to GitHub. The whole development cycle happened in a chat interface.
 
-### Architecture
+### Stack
 
-1. **[Stagehand](https://github.com/browserbase/stagehand)** - AI-powered browser automation using Browserbase
-2. **[Browserbase](https://browserbase.com)** - Headless browser infrastructure for running automation in the cloud
-3. **[OpenClaw](https://openclaw.ai)** - Agent framework that orchestrates the bot and provides messaging integrations
-4. **[DigitalOcean](https://www.digitalocean.com/products/droplets)** - Cloud hosting for 24/7 availability
+- **[Stagehand](https://github.com/browserbase/stagehand)** - handles the browser automation
+- **[Browserbase](https://browserbase.com)** - runs the headless browser
+- **[OpenClaw](https://openclaw.ai)** - the agent framework that makes chat-based development possible
+- **[DigitalOcean](https://www.digitalocean.com/products/droplets)** - $6/month droplet keeps it running 24/7
 
-### Development Process
+### How I Built It (via WhatsApp)
 
-I built this entirely through WhatsApp by:
-1. **Deploying OpenClaw** to a DigitalOcean droplet using the [1-click marketplace app](https://marketplace.digitalocean.com/apps/openclaw)
-2. **Connecting WhatsApp** during droplet setup (OpenClaw shows a QR code, scan it, done!)
-3. **Writing code via chat** - "Create a TypeScript bot that books Bay Club tennis courts"
-4. **Debugging through conversation** - "The pickleball selector isn't working, can you fix the XPath?"
-5. **Iterating on features** - "Add support for checking availability", "Clean up debug files"
-6. **Publishing to GitHub** - "Create a repo and push this code"
-7. **Documenting** - "Update the README with setup instructions"
+1. Deployed OpenClaw to DigitalOcean using their [marketplace app](https://marketplace.digitalocean.com/apps/openclaw)
+2. Scanned a QR code to link WhatsApp
+3. Started texting: "Create a bot that books Bay Club tennis courts"
+4. Iterated through bugs: "The pickleball duration selector isn't working"
+5. Added features: "Add Google Calendar integration"
+6. Published: "Push this to GitHub and write a README"
 
-**No SSH required. No code editor. Just WhatsApp. 📱**
+No terminal needed. Just conversation.
 
-## Quick Start: Deploy to DigitalOcean
+## Setup
 
-The easiest way to run this bot 24/7 is with the [OpenClaw 1-Click App on DigitalOcean](https://marketplace.digitalocean.com/apps/openclaw):
+### Option 1: DigitalOcean (Easiest)
 
-### 1. Deploy OpenClaw Droplet
+1. Go to the [OpenClaw marketplace page](https://marketplace.digitalocean.com/apps/openclaw)
+2. Click "Create OpenClaw Droplet"
+3. Pick the $6/month basic plan
+4. Wait ~2 minutes for it to boot
 
-1. Click **"Create OpenClaw Droplet"** on the [marketplace page](https://marketplace.digitalocean.com/apps/openclaw)
-2. Choose your droplet size (Basic $6/month works great)
-3. Select a region close to you
-4. Click **Create Droplet**
+Full guide: [How to Run OpenClaw on DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-run-openclaw)
 
-**Full tutorial:** [How to Run OpenClaw on DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-run-openclaw)
+### Option 2: Local Install
 
-### 2. Connect WhatsApp
+If you already have OpenClaw running locally, skip to "Install the Bot" below.
 
-After your droplet boots up:
+## Connect WhatsApp
 
-1. SSH into your droplet: `ssh root@your-droplet-ip`
-2. OpenClaw will automatically show a WhatsApp QR code in the terminal
-3. Open WhatsApp → **Settings → Linked Devices → Link a Device**
-4. Scan the QR code
-5. **Done!** You can now chat with your OpenClaw agent via WhatsApp 📱
+After your droplet starts:
 
-Alternatively, you can connect WhatsApp later:
-```bash
-openclaw gateway config.patch
-```
+1. SSH in: `ssh root@your-droplet-ip`
+2. OpenClaw will show a QR code in the terminal
+3. Open WhatsApp → Settings → Linked Devices → Link a Device
+4. Scan it
+5. Done
 
-Add WhatsApp channel configuration (see [OpenClaw WhatsApp docs](https://docs.openclaw.ai/channels/whatsapp)).
+You can now text your droplet like it's a person. Wild.
 
-### 3. Install This Bot
-
-Follow the "Installation on OpenClaw" section below.
-
-## Installation on OpenClaw
-
-Once you have OpenClaw running (either locally or on a droplet):
-
-### 1. Navigate to Skills Directory
+## Install the Bot
 
 ```bash
 cd ~/.openclaw/workspace/skills
-```
-
-### 2. Clone This Repository
-
-```bash
 git clone https://github.com/elizabethsiegle/bayclub-pb-tennis-openclaw-bot.git bayclub_manager
 cd bayclub_manager
-```
-
-### 3. Install Dependencies
-
-```bash
 npm install
 ```
 
-### 4. Set Bay Club Credentials
+### Add Your Bay Club Credentials
 
-Edit your OpenClaw gateway config to add your Bay Club credentials:
+Either add them to OpenClaw's config:
 
 ```bash
 openclaw gateway config.patch
 ```
-
-Add to the `env` section:
 
 ```json
 {
@@ -113,228 +88,130 @@ Add to the `env` section:
 }
 ```
 
-Or export them in your shell:
+Or just export them:
 
 ```bash
 export BAYCLUB_USERNAME="your-username"
 export BAYCLUB_PASSWORD="your-password"
 ```
 
-### 5. (Optional) Set Up Google Calendar Integration
+### Google Calendar (Optional)
 
-To automatically add bookings to your Google Calendar:
+If you want bookings to auto-appear in your calendar:
 
-#### Step 1: Create a Service Account
+**1. Create a service account**
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project (or select existing)
-3. Enable the **Google Calendar API**
-4. Go to **APIs & Services → Credentials**
-5. Click **Create Credentials → Service Account**
-6. Give it a name (e.g., "Bay Club Bot")
-7. Click **Done**
+- Go to [Google Cloud Console](https://console.cloud.google.com/)
+- Make a project (or use an existing one)
+- Enable the Calendar API
+- Create a service account under Credentials
+- Generate a JSON key and download it
 
-#### Step 2: Generate Key
+**2. Share your calendar**
 
-1. Click on your new service account
-2. Go to **Keys** tab
-3. Click **Add Key → Create New Key**
-4. Choose **JSON** format
-5. Download the JSON file
+- Open [Google Calendar](https://calendar.google.com)
+- Find your calendar (or make one called "Court Bookings")
+- Settings → Share with specific people
+- Add the service account email (it's in the JSON: `client_email`)
+- Give it "Make changes to events" permission
 
-#### Step 3: Share Your Calendar
+**3. Add credentials**
 
-1. Open [Google Calendar](https://calendar.google.com)
-2. Find the calendar you want to use (or create a new one like "Court Bookings")
-3. Click the three dots → **Settings and sharing**
-4. Scroll to **Share with specific people**
-5. Add the service account email (from the JSON file: `client_email`)
-6. Give it **Make changes to events** permission
-
-#### Step 4: Configure OpenClaw
-
-Save the credentials JSON file to your droplet or add as environment variable:
-
-**Option A: File (local development)**
-```bash
-# Copy the JSON file to the skill directory
-cp ~/Downloads/your-service-account-key.json ~/.openclaw/workspace/skills/bayclub_manager/google-calendar-credentials.json
-```
-
-**Option B: Environment Variable (production)**
-```bash
-openclaw gateway config.patch
-```
-
-Add to the `env` section:
-```json
-{
-  "env": {
-    "GOOGLE_CALENDAR_CREDENTIALS": "{\"type\":\"service_account\",...}",
-    "GOOGLE_CALENDAR_ID": "your-calendar-id@group.calendar.google.com"
-  }
-}
-```
-
-**Get your Calendar ID:**
-1. Go to [Google Calendar](https://calendar.google.com)
-2. Click the three dots on your calendar → **Settings and sharing**
-3. Scroll down to **Integrate calendar**
-4. Copy the **Calendar ID** (looks like `abc123@group.calendar.google.com` or use `primary` for your main calendar)
-
-Now bookings will automatically appear in your calendar! 📅
-
-### 6. Test the Bot
+Copy the JSON to the bot directory:
 
 ```bash
-# Check tennis availability
-NODE_ENV=development STAGEHAND_ENV=LOCAL HEADLESS=true npx ts-node cli.ts check tennis today
-
-# Book a court (will also add to calendar if configured)
-NODE_ENV=development STAGEHAND_ENV=LOCAL HEADLESS=true npx ts-node cli.ts book tennis sunday "5:00 PM - 6:30 PM"
+cp ~/Downloads/your-key.json ~/.openclaw/workspace/skills/bayclub_manager/google-calendar-credentials.json
 ```
 
-### 7. Use via OpenClaw Agent
+Set your calendar ID:
 
-Once set up as a skill, you can use natural language with your OpenClaw agent:
+```bash
+echo 'export GOOGLE_CALENDAR_ID="your-email@gmail.com"' >> ~/.bashrc
+source ~/.bashrc
+```
 
-**Via chat:**
+That's it. Future bookings will show up in your calendar automatically.
+
+## Usage
+
+### Via WhatsApp (Natural Language)
+
+Just text your OpenClaw agent:
+
 - "Check tennis courts for Sunday"
-- "Book pickleball for Saturday at 12:30 PM"
-- "What pickleball times are available tomorrow?"
+- "Book pickleball Saturday at 10am"
+- "What's available tomorrow?"
 
-**Via WhatsApp** (if configured):
-Just text your OpenClaw number the same commands!
-
-## Command-Line Usage
-
-You can also run the bot directly from the command line:
-
-### Check Availability
+### Via Command Line
 
 ```bash
-# Check tennis availability for today
-NODE_ENV=development STAGEHAND_ENV=LOCAL HEADLESS=true npx ts-node cli.ts check tennis today
+# Check what's open
+NODE_ENV=development STAGEHAND_ENV=LOCAL HEADLESS=true npx ts-node cli.ts check tennis saturday
 
-# Check pickleball availability for saturday
-NODE_ENV=development STAGEHAND_ENV=LOCAL HEADLESS=true npx ts-node cli.ts check pickleball saturday
+# Book a slot
+NODE_ENV=development STAGEHAND_ENV=LOCAL HEADLESS=true npx ts-node cli.ts book pickleball sunday "10:00 AM - 11:00 AM"
 ```
 
-### Book a Court
+## How It Works
 
-```bash
-# Book a tennis court
-NODE_ENV=development STAGEHAND_ENV=LOCAL HEADLESS=true npx ts-node cli.ts book tennis sunday "5:00 PM - 6:30 PM"
+1. Logs into Bay Club Connect
+2. Navigates to the booking page using Stagehand
+3. Selects sport + duration
+4. Finds available time slots
+5. Books the court
+6. Adds it to your Google Calendar
 
-# Book a pickleball court
-NODE_ENV=development STAGEHAND_ENV=LOCAL HEADLESS=true npx ts-node cli.ts book pickleball saturday "12:30 PM - 1:30 PM"
-```
+Pretty straightforward automation. The interesting part is that you can control it entirely through text messages.
 
-## OpenClaw Skill Integration
+## Files
 
-This bot is packaged as an OpenClaw skill. Once installed in `~/.openclaw/workspace/skills/bayclub_manager/`, OpenClaw will automatically detect it and you can use it via natural language commands.
-
-See `SKILL.md` for the skill definition.
-
-## Technical Details
-
-### How It Works
-
-1. **Authentication**: Logs into Bay Club Connect using provided credentials
-2. **Navigation**: Uses Stagehand to navigate to the booking interface
-3. **Sport Selection**: Clicks the appropriate sport (tennis/pickleball) and duration
-4. **Time Slot Discovery**: Parses the calendar view to find available slots
-5. **Booking Flow**: Automates the multi-step booking confirmation process
-6. **Calendar Sync**: Automatically adds confirmed bookings to Google Calendar (if configured)
-
-### Files
-
-- `cli.ts` - Command-line interface for direct usage
-- `bayclub_skills.ts` - OpenClaw skill exports for agent integration
-- `BayClubBot.ts` - Main browser automation logic using Stagehand and Browserbase
-- `GoogleCalendarService.ts` - Google Calendar API integration
-- `SKILL.md` - OpenClaw skill definition
-- `package.json` - Dependencies (Stagehand, googleapis, TypeScript)
-
-### Technologies Used
-
-- **[Stagehand](https://github.com/browserbase/stagehand)** - AI-powered browser automation framework
-- **[Browserbase](https://browserbase.com)** - Serverless browser infrastructure for reliable automation
-- **[OpenClaw](https://openclaw.ai)** - AI agent framework & orchestration ([Docs](https://docs.openclaw.ai) | [GitHub](https://github.com/openclaw/openclaw))
-- **[Google Calendar API](https://developers.google.com/calendar)** - Automatic calendar event creation
-- **[TypeScript](https://www.typescriptlang.org/)** - Type-safe development
-- **[DigitalOcean](https://www.digitalocean.com)** - Cloud hosting ([Marketplace App](https://marketplace.digitalocean.com/apps/openclaw))
-- **[WhatsApp](https://www.whatsapp.com)** - Messaging interface via OpenClaw integration
-
-## Building via WhatsApp
-
-The coolest part of this project is that **the entire bot was built through WhatsApp conversations**. Here's what that looked like:
-
-<!-- TODO: Add screenshots of WhatsApp conversation -->
-<!-- Example conversation flow:
-1. Initial request: "check tennis courts for sunday please"
-2. Bot checking availability and showing results
-3. Booking request: "book 5-6:30pm please"
-4. Creating GitHub repo: "can you make a github repo for me"
-5. Editing README: "edit the readme to include directions"
--->
-
-### What I Did Through WhatsApp
-
-✅ Wrote all TypeScript code  
-✅ Debugged XPath selectors and automation logic  
-✅ Ran test commands and verified bookings  
-✅ Cleaned up debug files  
-✅ Initialized Git repo and created .gitignore  
-✅ Set up GitHub credentials  
-✅ Pushed code to GitHub  
-✅ Wrote and edited this README  
-
-**No traditional coding environment needed - just natural language instructions via WhatsApp!**
+- `cli.ts` - command-line interface
+- `bayclub_skills.ts` - OpenClaw skill exports
+- `BayClubBot.ts` - browser automation logic
+- `GoogleCalendarService.js` - calendar integration
+- `SKILL.md` - skill definition
+- `package.json` - dependencies
 
 ## Why OpenClaw?
 
-[OpenClaw](https://openclaw.ai) makes it incredibly easy to:
+Normal workflow: Write code → SSH into server → Test → Debug → Deploy
 
-- ✅ **Build via chat** - Write code through natural conversation (WhatsApp, Telegram, Discord, etc.)
-- ✅ **Run 24/7 in the cloud** - Deploy to DigitalOcean with 1-click
-- ✅ **Control browsers** - Built-in Stagehand/Browserbase integration
-- ✅ **Integrate messaging** - Native WhatsApp, Telegram, iMessage, Signal support
-- ✅ **Schedule tasks** - Cron jobs for automated checks and bookings
-- ✅ **Use natural language** - No CLI commands to memorize
+OpenClaw workflow: Text "build this" → Done
 
-**Learn more:**
-- [OpenClaw Docs](https://docs.openclaw.ai)
-- [GitHub Repository](https://github.com/openclaw/openclaw)
+It's legitimately different. You're having a conversation with something that can read files, write code, run tests, and push to GitHub. I built this entire bot without opening a terminal once.
+
+Links:
+- [Docs](https://docs.openclaw.ai)
+- [GitHub](https://github.com/openclaw/openclaw)
 - [DigitalOcean Marketplace](https://marketplace.digitalocean.com/apps/openclaw)
-- [Community Discord](https://discord.gg/openclaw)
+- [Discord Community](https://discord.gg/openclaw)
 
 ## Troubleshooting
 
-### "Invalid username or password"
-Double-check your `BAYCLUB_USERNAME` and `BAYCLUB_PASSWORD` environment variables.
+**"Invalid username or password"**  
+Check your Bay Club credentials in the environment variables.
 
-### "Timeout waiting for element"
-The Bay Club website might have changed. Check the XPath selectors in `BayClubBot.ts`.
+**"Timeout waiting for element"**  
+Bay Club might've changed their website. The XPath selectors in `BayClubBot.ts` may need updating.
 
-### Browser doesn't launch
-Make sure Browserbase is configured correctly. For local development:
+**Browser won't launch**  
+Install Playwright's browser locally:
 ```bash
 npx playwright install chromium
 ```
 
-For production, Stagehand uses Browserbase's cloud browser infrastructure automatically.
+In production, Stagehand uses Browserbase's cloud browsers automatically.
 
-## Future Enhancements
+## Todo
 
-- [ ] Add scheduling (auto-book weekly tennis at favorite time)
-- [ ] Send notifications when new slots open up
-- [ ] Support for multiple Bay Club locations
-- [ ] Calendar integration (add bookings to Google Calendar)
+- Auto-book weekly recurring slots
+- Notify when new slots open
+- Support other Bay Club locations
+- Maybe add SMS notifications
 
 ## Contributing
 
-Pull requests welcome! This was built as a personal automation project but happy to accept improvements.
+PRs welcome. This started as a personal tool but if you find it useful, feel free to improve it.
 
 ## License
 
@@ -342,4 +219,4 @@ MIT
 
 ---
 
-Built with ❤️ using [OpenClaw](https://openclaw.ai)
+Built by texting with [OpenClaw](https://openclaw.ai)
