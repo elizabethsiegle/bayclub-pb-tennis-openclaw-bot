@@ -1,11 +1,11 @@
-# Bay Club Court Booking Bot
+# Bay Club Court Manager OpenClaw Bot
 
 Never miss a court slot again. This bot handles tennis and pickleball bookings at Bay Club Connect automatically - you can even text it from WhatsApp.
 
 ## What It Does
 
-- 🎾 Checks tennis court availability
-- 🏓 Books pickleball courts
+- 🎾 Check and book tennis courts
+- 🏓 Check and book pickleball courts
 - 🤖 Runs browser automation via Stagehand
 - 📅 Works with "today", "tomorrow", or specific weekdays
 - 💬 WhatsApp interface - just text to book
@@ -13,27 +13,9 @@ Never miss a court slot again. This bot handles tennis and pickleball bookings a
 
 ## The Story
 
-I built this entire thing through WhatsApp messages. No SSH, no VS Code - just chatting with my OpenClaw agent.
+I started building this by SSHing into my DigitalOcean droplet in VSCode, writing the initial automation code. But then I realized I could just... chat with OpenClaw via WhatsApp to finish it.
 
-Seriously. I'd text things like "the pickleball selector is broken, can you fix the XPath?" and it would debug, fix the code, test it, and push to GitHub. The whole development cycle happened in a chat interface.
-
-### Stack
-
-- **[Stagehand](https://github.com/browserbase/stagehand)** - handles the browser automation
-- **[Browserbase](https://browserbase.com)** - runs the headless browser
-- **[OpenClaw](https://openclaw.ai)** - the agent framework that makes chat-based development possible
-- **[DigitalOcean](https://www.digitalocean.com/products/droplets)** - $6/month droplet keeps it running 24/7
-
-### How I Built It (via WhatsApp)
-
-1. Deployed OpenClaw to DigitalOcean using their [marketplace app](https://marketplace.digitalocean.com/apps/openclaw)
-2. Scanned a QR code to link WhatsApp
-3. Started texting: "Create a bot that books Bay Club tennis courts"
-4. Iterated through bugs: "The pickleball duration selector isn't working"
-5. Added features: "Add Google Calendar integration"
-6. Published: "Push this to GitHub and write a README"
-
-No terminal needed. Just conversation.
+So I did. The rest of the development - debugging XPath selectors, adding calendar integration, cleaning up files, writing docs, pushing to GitHub - all happened through WhatsApp messages. No more switching between terminal windows.
 
 ## Setup
 
@@ -41,7 +23,7 @@ No terminal needed. Just conversation.
 
 1. Go to the [OpenClaw marketplace page](https://marketplace.digitalocean.com/apps/openclaw)
 2. Click "Create OpenClaw Droplet"
-3. Pick the $6/month basic plan
+3. Pick the $21/month plan
 4. Wait ~2 minutes for it to boot
 
 Full guide: [How to Run OpenClaw on DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-run-openclaw)
@@ -58,7 +40,7 @@ After your droplet starts:
 2. OpenClaw will show a QR code in the terminal
 3. Open WhatsApp → Settings → Linked Devices → Link a Device
 4. Scan it
-5. Done
+5. Done!
 
 You can now text your droplet like it's a person. Wild.
 
@@ -208,15 +190,3 @@ In production, Stagehand uses Browserbase's cloud browsers automatically.
 - Notify when new slots open
 - Support other Bay Club locations
 - Maybe add SMS notifications
-
-## Contributing
-
-PRs welcome. This started as a personal tool but if you find it useful, feel free to improve it.
-
-## License
-
-MIT
-
----
-
-Built by texting with [OpenClaw](https://openclaw.ai)
