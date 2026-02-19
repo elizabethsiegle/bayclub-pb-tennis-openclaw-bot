@@ -1,0 +1,19 @@
+{
+  "name": "bayclub-booking",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "openclaw": {
+    "type": "skill"
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  },
+  "dependencies": {
+    "@browserbasehq/stagehand": "^2.2.0",
+    "@types/node": "^25.2.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,7 @@
+node_modules/
+.env
+*.png
+*.html
+downloads/
+*.log
+.DS_Store
