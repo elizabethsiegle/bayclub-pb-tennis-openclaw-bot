@@ -12,30 +12,63 @@ Automated tennis and pickleball court booking for Bay Club Connect using Stageha
 
 ## How I Built This
 
-This bot was built using [OpenClaw](https://openclaw.ai), an AI agent framework that lets you control browser automation, run scheduled tasks, and integrate with messaging platforms like WhatsApp.
+**This entire bot was built and edited via WhatsApp!** 🤯
+
+I chatted with my OpenClaw agent through WhatsApp to write all the code, debug the automation, clean up files, create this README, and push everything to GitHub - all without touching a traditional code editor.
 
 ### Architecture
 
-1. **Stagehand** - Browser automation framework that provides natural language control over web pages
-2. **OpenClaw** - Agent framework that orchestrates the bot and provides messaging integrations
-3. **DigitalOcean Droplet** - Cloud hosting for 24/7 availability
+1. **[Stagehand](https://github.com/browserbase/stagehand)** - AI-powered browser automation using Browserbase
+2. **[Browserbase](https://browserbase.com)** - Headless browser infrastructure for running automation in the cloud
+3. **[OpenClaw](https://openclaw.ai)** - Agent framework that orchestrates the bot and provides messaging integrations
+4. **[DigitalOcean](https://www.digitalocean.com/products/droplets)** - Cloud hosting for 24/7 availability
 
 ### Development Process
 
-I built this by:
-1. Deploying OpenClaw to a DigitalOcean droplet (1-click install)
-2. Creating TypeScript files to automate Bay Club Connect's booking flow
-3. Iteratively debugging the web automation using Playwright
-4. Packaging it as an OpenClaw skill for easy reuse
-5. Connecting WhatsApp so I can book courts from my phone
+I built this entirely through WhatsApp by:
+1. **Deploying OpenClaw** to a DigitalOcean droplet using the [1-click marketplace app](https://marketplace.digitalocean.com/apps/openclaw)
+2. **Connecting WhatsApp** during droplet setup (OpenClaw shows a QR code, scan it, done!)
+3. **Writing code via chat** - "Create a TypeScript bot that books Bay Club tennis courts"
+4. **Debugging through conversation** - "The pickleball selector isn't working, can you fix the XPath?"
+5. **Iterating on features** - "Add support for checking availability", "Clean up debug files"
+6. **Publishing to GitHub** - "Create a repo and push this code"
+7. **Documenting** - "Update the README with setup instructions"
+
+**No SSH required. No code editor. Just WhatsApp. 📱**
 
 ## Quick Start: Deploy to DigitalOcean
 
-The easiest way to run this bot 24/7 is with a DigitalOcean droplet:
+The easiest way to run this bot 24/7 is with the [OpenClaw 1-Click App on DigitalOcean](https://marketplace.digitalocean.com/apps/openclaw):
 
-1. **One-Click OpenClaw Deploy**: Follow [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-run-openclaw) to deploy OpenClaw to DigitalOcean
-2. **SSH into your droplet**: `ssh root@your-droplet-ip`
-3. **Set up the bot**: Follow the "Installation on OpenClaw" section below
+### 1. Deploy OpenClaw Droplet
+
+1. Click **"Create OpenClaw Droplet"** on the [marketplace page](https://marketplace.digitalocean.com/apps/openclaw)
+2. Choose your droplet size (Basic $6/month works great)
+3. Select a region close to you
+4. Click **Create Droplet**
+
+**Full tutorial:** [How to Run OpenClaw on DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-run-openclaw)
+
+### 2. Connect WhatsApp
+
+After your droplet boots up:
+
+1. SSH into your droplet: `ssh root@your-droplet-ip`
+2. OpenClaw will automatically show a WhatsApp QR code in the terminal
+3. Open WhatsApp → **Settings → Linked Devices → Link a Device**
+4. Scan the QR code
+5. **Done!** You can now chat with your OpenClaw agent via WhatsApp 📱
+
+Alternatively, you can connect WhatsApp later:
+```bash
+openclaw gateway config.patch
+```
+
+Add WhatsApp channel configuration (see [OpenClaw WhatsApp docs](https://docs.openclaw.ai/channels/whatsapp)).
+
+### 3. Install This Bot
+
+Follow the "Installation on OpenClaw" section below.
 
 ## Installation on OpenClaw
 
@@ -152,25 +185,61 @@ See `SKILL.md` for the skill definition.
 
 - `cli.ts` - Command-line interface for direct usage
 - `bayclub_skills.ts` - OpenClaw skill exports for agent integration
-- `BayClubBot.ts` - Main browser automation logic using Stagehand/Playwright
+- `BayClubBot.ts` - Main browser automation logic using Stagehand and Browserbase
 - `SKILL.md` - OpenClaw skill definition
-- `package.json` - Dependencies (Stagehand, Playwright, TypeScript)
+- `package.json` - Dependencies (Stagehand, TypeScript)
 
 ### Technologies Used
 
-- **[Stagehand](https://github.com/browserbase/stagehand)** - AI-powered browser automation
-- **[Playwright](https://playwright.dev/)** - Browser control engine
-- **[OpenClaw](https://openclaw.ai)** - Agent framework & orchestration
-- **TypeScript** - Type-safe development
-- **DigitalOcean** - Cloud hosting
+- **[Stagehand](https://github.com/browserbase/stagehand)** - AI-powered browser automation framework
+- **[Browserbase](https://browserbase.com)** - Serverless browser infrastructure for reliable automation
+- **[OpenClaw](https://openclaw.ai)** - AI agent framework & orchestration ([Docs](https://docs.openclaw.ai) | [GitHub](https://github.com/openclaw/openclaw))
+- **[TypeScript](https://www.typescriptlang.org/)** - Type-safe development
+- **[DigitalOcean](https://www.digitalocean.com)** - Cloud hosting ([Marketplace App](https://marketplace.digitalocean.com/apps/openclaw))
+- **[WhatsApp](https://www.whatsapp.com)** - Messaging interface via OpenClaw integration
+
+## Building via WhatsApp
+
+The coolest part of this project is that **the entire bot was built through WhatsApp conversations**. Here's what that looked like:
+
+<!-- TODO: Add screenshots of WhatsApp conversation -->
+<!-- Example conversation flow:
+1. Initial request: "check tennis courts for sunday please"
+2. Bot checking availability and showing results
+3. Booking request: "book 5-6:30pm please"
+4. Creating GitHub repo: "can you make a github repo for me"
+5. Editing README: "edit the readme to include directions"
+-->
+
+### What I Did Through WhatsApp
+
+✅ Wrote all TypeScript code  
+✅ Debugged XPath selectors and automation logic  
+✅ Ran test commands and verified bookings  
+✅ Cleaned up debug files  
+✅ Initialized Git repo and created .gitignore  
+✅ Set up GitHub credentials  
+✅ Pushed code to GitHub  
+✅ Wrote and edited this README  
+
+**No traditional coding environment needed - just natural language instructions via WhatsApp!**
 
 ## Why OpenClaw?
 
-OpenClaw makes it easy to:
-- ✅ Run browser automation 24/7 in the cloud
-- ✅ Integrate with messaging platforms (WhatsApp, Telegram, Discord, etc.)
-- ✅ Schedule automated checks and bookings
-- ✅ Use natural language instead of remembering CLI commands
+[OpenClaw](https://openclaw.ai) makes it incredibly easy to:
+
+- ✅ **Build via chat** - Write code through natural conversation (WhatsApp, Telegram, Discord, etc.)
+- ✅ **Run 24/7 in the cloud** - Deploy to DigitalOcean with 1-click
+- ✅ **Control browsers** - Built-in Stagehand/Browserbase integration
+- ✅ **Integrate messaging** - Native WhatsApp, Telegram, iMessage, Signal support
+- ✅ **Schedule tasks** - Cron jobs for automated checks and bookings
+- ✅ **Use natural language** - No CLI commands to memorize
+
+**Learn more:**
+- [OpenClaw Docs](https://docs.openclaw.ai)
+- [GitHub Repository](https://github.com/openclaw/openclaw)
+- [DigitalOcean Marketplace](https://marketplace.digitalocean.com/apps/openclaw)
+- [Community Discord](https://discord.gg/openclaw)
 
 ## Troubleshooting
 
@@ -181,10 +250,12 @@ Double-check your `BAYCLUB_USERNAME` and `BAYCLUB_PASSWORD` environment variable
 The Bay Club website might have changed. Check the XPath selectors in `BayClubBot.ts`.
 
 ### Browser doesn't launch
-Make sure you have the required dependencies:
+Make sure Browserbase is configured correctly. For local development:
 ```bash
 npx playwright install chromium
 ```
+
+For production, Stagehand uses Browserbase's cloud browser infrastructure automatically.
 
 ## Future Enhancements
 
