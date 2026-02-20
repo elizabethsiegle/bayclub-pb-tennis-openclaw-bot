@@ -87,6 +87,66 @@ export async function bayclub_get_availability(params: { sport: Sport; day: stri
 }
 
 /**
+ * Helper to schedule a reminder cron job
+ */
+async function scheduleReminder(sport: string, day: string, time: string) {
+  try {
+    // Parse the time to get start time
+    const timeMatch = time.match(/^(.+?)\s*-/);
+    const startTime = timeMatch ? timeMatch[1].trim() : time;
+    
+    const bookingDate = parseDayToDate(day);
+    const startDateTime = calendarService.parseTimeToDate(bookingDate, startTime);
+    
+    if (!startDateTime) {
+      console.error('[Reminder] Could not parse time:', time);
+      return false;
+    }
+    
+    // Calculate 2 hours before
+    const reminderTime = new Date(startDateTime.getTime() - 2 * 60 * 60 * 1000);
+    
+    // Don't schedule if it's in the past
+    if (reminderTime < new Date()) {
+      console.log('[Reminder] Booking is too soon for a 2-hour reminder');
+      return false;
+    }
+    
+    const sportEmoji = sport === 'tennis' ? '🎾' : '🏓';
+    const reminderText = `${sportEmoji} Reminder: You have ${sport} at Bay Club in 2 hours (${startTime})`;
+    
+    console.log('[Reminder] Scheduling reminder for:', reminderTime.toISOString());
+    
+    // Use exec to call openclaw CLI to create cron job
+    const { execSync } = require('child_process');
+    
+    const cronJob = {
+      name: `Court Reminder - ${sport} ${day}`,
+      schedule: {
+        kind: 'at',
+        at: reminderTime.toISOString()
+      },
+      sessionTarget: 'main',
+      payload: {
+        kind: 'systemEvent',
+        text: reminderText
+      }
+    };
+    
+    const result = execSync(
+      `openclaw cron add '${JSON.stringify(cronJob)}'`,
+      { encoding: 'utf-8' }
+    );
+    
+    console.log('[Reminder] ✓ Scheduled:', result);
+    return true;
+  } catch (error) {
+    console.error('[Reminder] Failed to schedule:', error);
+    return false;
+  }
+}
+
+/**
  * Skill: Book Court
  * This function is called by OpenClaw to finalize a reservation.
  */
@@ -116,6 +176,13 @@ export async function bayclub_book_court(params: { sport: Sport; day: string; ti
         }
       } catch (calError) {
         console.error('[OpenClaw] Calendar integration failed (booking still successful):', calError);
+      }
+      
+      // Schedule 2-hour reminder
+      try {
+        await scheduleReminder(params.sport, params.day, params.time);
+      } catch (reminderError) {
+        console.error('[OpenClaw] Reminder scheduling failed (booking still successful):', reminderError);
       }
       
       return {
